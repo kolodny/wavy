@@ -1,0 +1,25 @@
+{
+  "name": "wavy",
+  "version": "1.0.0",
+  "description": "use `~` in require and import calls",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node postinstall",
+    "test": "node test"
+  },
+  "keywords": [
+    "~",
+    "require",
+    "symlink"
+  ],
+  "author": "Moshe Kolodny",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolodny/wavy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kolodny/wavy/issues"
+  },
+  "homepage": "https://github.com/kolodny/wavy#readme"
+}
