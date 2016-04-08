@@ -1,12 +1,21 @@
 # wavy
-use `~` in require and import calls
+use ~ in require and import calls
 
 [![NPM version][npm-image]][npm-url]
 [![Build status][travis-image]][travis-url]
 [![Downloads][downloads-image]][downloads-url]
 
+### install
+
+```bash
+npm install --save wavy
+```
+
 This module let's you turn things like `require('../../../../foo')` into something like  
 `require('~/foo')`. The way it works is that on postinstall it creates a symlink in `app/node_modules/~` to point to `app/`
+
+Tested on Mac, Linux and Windows
+
 
 [npm-image]: https://img.shields.io/npm/v/wavy.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/wavy

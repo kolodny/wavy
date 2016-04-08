@@ -1,7 +1,8 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var path = require('path');
 
-var testDir = './test-dir';
+var testDir = path.resolve(__dirname + '/test-dir');
 
 if (fs.existsSync(testDir)) {
   deleteFolderRecursive(testDir);
