@@ -32,7 +32,7 @@ exec('node --version', function(err, out) {
         fs.mkdirSync(testDir + '/node_modules/');
         fs.writeFileSync(testDir + '/node_modules/~', '123');
         exec('npm install ..', { cwd: testDir }, function(err) {
-          var regex = RegExp('^Error: ' + testDir + '/node_modules/~ is already being used$', 'm')
+          var regex = /^Error: .* is already being used$/m;
           if (!regex.test(err.message)) {
             handleError('did not handle improper existing ~')
           }
@@ -48,7 +48,7 @@ exec('node --version', function(err, out) {
 
 function handleError(err) {
   if (err) {
-    deleteFolderRecursive(testDir);
+    //deleteFolderRecursive(testDir);
     console.error(err.stack);
     process.exit(1);
   }
