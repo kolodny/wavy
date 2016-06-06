@@ -15,7 +15,7 @@ fs.writeFileSync(testDir + '/foo.js', 'module.exports = "foo";');
 
 console.log('wavy');
 exec('node --version', function(err, out) {
-  var isV5 = /^v5/.test(out);
+  var isgnoreNpmInstallDotDot = Number(out.match(/v(\d+)/)[1]) >= 5;
   exec('npm install -S ..', { cwd: testDir }, function(err) {
     handleError(err);
     console.log('√ installs without errors');
@@ -26,7 +26,7 @@ exec('node --version', function(err, out) {
       }
       console.log('√ works after install');
       exec('npm install ..', { cwd: testDir }, function(err) {
-        if (!isV5) handleError(err);
+        if (!isgnoreNpmInstallDotDot) handleError(err);
         console.log('√ can handle multiple installs');
         deleteFolderRecursive(testDir + '/node_modules');
         fs.mkdirSync(testDir + '/node_modules/');
