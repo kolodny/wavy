@@ -32,9 +32,9 @@ exec('node --version', function(err, out) {
         fs.mkdirSync(testDir + '/node_modules/');
         fs.writeFileSync(testDir + '/node_modules/~', '123');
         exec('npm install ..', { cwd: testDir }, function(err) {
-          var regex = RegExp('^Error: ' + testDir + '/node_modules/~ is already being used$', 'm')
+          var regex = /^Error: .*[\/\\]node_modules[\/\\]~ is already being used$/m;
           if (!regex.test(err.message)) {
-            handleError('did not handle improper existing ~')
+            handleError(new Error('did not handle improper existing ~'))
           }
           console.log('√ handles `~` already being used by something else');
           console.log('');
