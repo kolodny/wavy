@@ -1,6 +1,6 @@
 {
   "name": "wavy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "use `~` in require and import calls",
   "main": "index.js",
   "scripts": {
