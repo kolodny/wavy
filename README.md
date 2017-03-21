@@ -11,7 +11,7 @@ use ~ in require and import calls
 npm install --save wavy
 ```
 
-This module let's you turn things like `require('../../../../foo')` into something like  
+This module lets you turn things like `require('../../../../foo')` into something like  
 `require('~/foo')`. The way it works is that on postinstall it creates a symlink in `app/node_modules/~` to point to `app/`
 
 Tested on Mac, Linux, and Windows  
