@@ -18,15 +18,18 @@ process.chdir(testDir);
 exec('node --version', function(err, out) {
   var isgnoreNpmInstallDotDot = Number(out.match(/v(\d+)/)[1]) >= 5;
 
+  process.chdir(testDir);
   exec('npm install -S ..', function(err) {
     handleError(err);
     console.log('√ installs without errors');
+    process.chdir(testDir);
     exec('node index', function(err, stdout) {
       handleError(err);
       if (stdout.trim() !== 'foo') {
         handleError(new Error('expected output to be "foo" got ' + stdout.trim()));
       }
       console.log('√ works after install');
+      process.chdir(testDir);
       exec('npm install ..', function(err) {
         if (!isgnoreNpmInstallDotDot) handleError(err);
         console.log('√ can handle multiple installs');
