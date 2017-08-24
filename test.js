@@ -14,24 +14,27 @@ fs.writeFileSync(testDir + '/index.js', 'console.log(require("~/foo"))');
 fs.writeFileSync(testDir + '/foo.js', 'module.exports = "foo";');
 
 console.log('wavy');
+process.chdir(testDir);
 exec('node --version', function(err, out) {
   var isgnoreNpmInstallDotDot = Number(out.match(/v(\d+)/)[1]) >= 5;
-  exec('npm install -S ..', { cwd: testDir }, function(err) {
+
+  exec('npm install -S ..', function(err) {
     handleError(err);
     console.log('√ installs without errors');
-    exec('node index', { cwd: testDir }, function(err, stdout) {
+    exec('node index', function(err, stdout) {
       handleError(err);
       if (stdout.trim() !== 'foo') {
         handleError(new Error('expected output to be "foo" got ' + stdout.trim()));
       }
       console.log('√ works after install');
-      exec('npm install ..', { cwd: testDir }, function(err) {
+      exec('npm install ..', function(err) {
         if (!isgnoreNpmInstallDotDot) handleError(err);
         console.log('√ can handle multiple installs');
         deleteFolderRecursive(testDir + '/node_modules');
         fs.mkdirSync(testDir + '/node_modules/');
         fs.writeFileSync(testDir + '/node_modules/~', '123');
-        exec('npm install ..', { cwd: testDir }, function(err) {
+        process.chdir(testDir);
+        exec('npm install ..', function(err) {
           var regex = /^Error: .*[\/\\]node_modules[\/\\]~ is already being used$/m;
           if (!regex.test(err.message)) {
             handleError(new Error('did not handle improper existing ~'))
@@ -56,17 +59,21 @@ function handleError(err) {
 
 // http://stackoverflow.com/a/12761924
 function deleteFolderRecursive(path) {
-  var files = [];
-  if (fs.existsSync(path)) {
-    files = fs.readdirSync(path);
-    files.forEach(function(file,index){
-      var curPath = path + "/" + file;
-      if (fs.lstatSync(curPath).isDirectory()) {
-        deleteFolderRecursive(curPath);
-      } else {
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(path);
+  process.chdir('..');
+  inner(path);
+  function inner(path) {
+    var files = [];
+    if (fs.existsSync(path)) {
+      files = fs.readdirSync(path);
+      files.forEach(function(file,index){
+        var curPath = path + "/" + file;
+        if (fs.lstatSync(curPath).isDirectory()) {
+          inner(curPath);
+        } else {
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.rmdirSync(path);
+    }
   }
 };
